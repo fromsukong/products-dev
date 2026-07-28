@@ -1,0 +1,18 @@
+[submodule "repos/ously-core"]
+	path = repos/ously-core
+	url = https://github.com/fromsukong/ously-core.git
+[submodule "repos/ously-cli"]
+	path = repos/ously-cli
+	url = https://github.com/fromsukong/ously-cli.git
+[submodule "repos/ously-landing"]
+	path = repos/ously-landing
+	url = https://github.com/fromsukong/ously-landing.git
+[submodule "repos/products-web"]
+	path = repos/products-web
+	url = https://github.com/fromsukong/products-web.git
+[submodule "repos/fromsukong.com"]
+	path = repos/fromsukong.com
+	url = https://github.com/fromsukong/fromsukong.com.git
+[submodule "products"]
+	path = products
+	url = git@github.com:fromsukong/products-md.git
