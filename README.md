@@ -6,15 +6,12 @@
 
 ## 🏛️ Submodule & Sparse-Checkout Architecture
 
-Each codebase repository (e.g. `ously-core`, `ously-cli`, `fromsukong.com`, `products-md`) contains a dedicated singular **`product/`** folder containing its technical spec and task files:
+Each codebase repository (e.g. `ously-core`, `ously-cli`, `fromsukong.com`, `products-md`) contains a dedicated singular **`product/`** folder containing its technical spec:
 
 ```
 <repo-name>/ (Codebase Repository)
 ├── product/            <-- Targeted by sparse checkout in products-md
-│   ├── spec.md         # Repository specification
-│   └── task/           # Actionable tasks
-│       ├── active/     # Active tasks
-│       └── archive/    # Completed tasks
+│   └── spec.md         # Repository specification
 ├── src/                # Codebase source code (excluded from products-md)
 └── package.json
 ```
@@ -62,13 +59,8 @@ products-md/
 │   ├── ously/prd.md
 │   ├── project-management/prd.md
 │   └── personal-brand/prd.md
-├── product/                       # Local Repo Spec & Tasks for products-md itself
-│   ├── spec.md
-│   └── task/
-│       ├── active/
-│       │   ├── TASK-003-products-md-system.md
-│       │   └── TASK-004-revisit-specs-and-tasks.md
-│       └── archive/
+├── product/                       # Local Repo Spec for products-md itself
+│   └── spec.md
 └── repos/                         # Submodules (Sparse-checked out to repos/<name>/product/)
     ├── ously-core/product/
     ├── ously-cli/product/

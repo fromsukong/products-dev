@@ -3,7 +3,7 @@
 /**
  * AI Agent Helper Script for `products-md`
  * 
- * Inspects high-level product specifications (`products/`) and submodule repository specifications/tasks (`repos/<repo-name>/product/` & `product/`).
+ * Inspects high-level product specifications (`products/`) and submodule repository specifications (`repos/<repo-name>/product/` & `product/`).
  * 
  * Usage:
  *   node scripts/agent-helper.js graph
@@ -18,30 +18,6 @@ const ROOT_DIR = path.resolve(__dirname, '..');
 const PRODUCTS_DIR = path.join(ROOT_DIR, 'products');
 const REPOS_DIR = path.join(ROOT_DIR, 'repos');
 const LOCAL_PRODUCT_DIR = path.join(ROOT_DIR, 'product');
-
-// Utility: Helper to parse YAML Frontmatter
-function parseFrontmatter(fileContent) {
-  const frontmatterRegex = /^---\r?\n([\s\S]*?)\r?\n---/;
-  const match = fileContent.match(frontmatterRegex);
-  if (!match) return {};
-  
-  const yamlBlock = match[1];
-  const metadata = {};
-  yamlBlock.split('\n').forEach(line => {
-    const colonIdx = line.indexOf(':');
-    if (colonIdx !== -1) {
-      const key = line.slice(0, colonIdx).trim();
-      let value = line.slice(colonIdx + 1).trim();
-      if (value.startsWith('[') && value.endsWith(']')) {
-        value = value.slice(1, -1).split(',').map(v => v.trim()).filter(Boolean);
-      } else {
-        value = value.replace(/^['"]|['"]$/g, '');
-      }
-      metadata[key] = value;
-    }
-  });
-  return metadata;
-}
 
 // Utility: Extract Repositories Table from PRD markdown
 function parseReposFromPRD(prdContent) {
@@ -77,49 +53,6 @@ function parseReposFromPRD(prdContent) {
   return repos;
 }
 
-// Utility: Read Tasks from Submodule or Local Directory
-function getRepoTasks(repoName) {
-  let tasksDir;
-  if (repoName === 'products-md') {
-    tasksDir = path.join(LOCAL_PRODUCT_DIR, 'task');
-  } else {
-    const repoDir = path.join(REPOS_DIR, repoName);
-    tasksDir = path.join(repoDir, 'product', 'task');
-    if (!fs.existsSync(tasksDir)) {
-      tasksDir = path.join(repoDir, 'product', 'tasks');
-    }
-  }
-
-  const activeDir = path.join(tasksDir, 'active');
-  const archiveDir = path.join(tasksDir, 'archive');
-
-  const readDir = (dir, status) => {
-    if (!fs.existsSync(dir)) return [];
-    return fs.readdirSync(dir).filter(f => f.endsWith('.md')).map(file => {
-      const content = fs.readFileSync(path.join(dir, file), 'utf8');
-      const fm = parseFrontmatter(content);
-      const relPath = repoName === 'products-md' 
-        ? `product/task/${status}/${file}`
-        : `repos/${repoName}/product/task/${status}/${file}`;
-      return {
-        file: file,
-        path: relPath,
-        id: fm.id || '',
-        title: fm.title || '',
-        status: fm.status || status,
-        priority: fm.priority || 'Medium',
-        repo: repoName,
-        related_tasks: Array.isArray(fm.related_tasks) ? fm.related_tasks : []
-      };
-    });
-  };
-
-  return {
-    active: readDir(activeDir, 'active'),
-    archive: readDir(archiveDir, 'archive')
-  };
-}
-
 // Command: List Products
 function getProducts() {
   if (!fs.existsSync(PRODUCTS_DIR)) return [];
@@ -148,7 +81,6 @@ function getProducts() {
           submodule_path: isLocal ? 'product/' : `repos/${r.name}`,
           sparse_folder: isLocal ? 'product/' : `repos/${r.name}/product/`,
           spec_file: isLocal ? 'product/spec.md' : `repos/${r.name}/product/spec.md`,
-          task_dir: isLocal ? 'product/task/' : `repos/${r.name}/product/task/`,
           is_initialized: isLocal ? fs.existsSync(LOCAL_PRODUCT_DIR) : fs.existsSync(path.join(REPOS_DIR, r.name, 'product'))
         };
       })
@@ -163,17 +95,7 @@ function buildGraph() {
     timestamp: new Date().toISOString(),
     architecture: 'Submodule Sparse-Checkout Aggregator (singular product/ folder target)',
     sparse_checkout_target: 'product/',
-    products: products.map(p => ({
-      ...p,
-      repositories: p.repositories.map(r => {
-        const tasks = getRepoTasks(r.name);
-        return {
-          ...r,
-          active_tasks: tasks.active,
-          archived_tasks: tasks.archive
-        };
-      })
-    }))
+    products: products.map(p => ({ ...p }))
   };
 }
 

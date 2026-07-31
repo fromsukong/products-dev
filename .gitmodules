@@ -19,3 +19,6 @@
 [submodule "repos/central_workflow"]
 	path = repos/central_workflow
 	url = https://github.com/fromsukong/central_workflow.git
+[submodule "repos/repo-template"]
+	path = repos/repo-template
+	url = https://github.com/fromsukong/repo-template.git

@@ -6,7 +6,7 @@
 
 set -e
 
-COMMIT_MSG="${1:-docs: update product spec and task files}"
+COMMIT_MSG="${1:-docs: update product spec files}"
 
 echo "========================================"
 echo "🚀 Syncing & Pushing All Submodules..."

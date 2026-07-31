@@ -8,7 +8,7 @@
 ---
 
 ## 1. Description & Scope
-`products-md` is the central Markdown repository storing product PRDs (`products/`), sparse submodule pointers (`repos/`), automated setup scripts (`scripts/`), and local repository specifications & task tracking (`product/spec.md` and `product/task/`).
+`products-md` is the central Markdown repository storing product PRDs (`products/`), sparse submodule pointers (`repos/`), automated setup scripts (`scripts/`), and the local repository specification (`product/spec.md`).
 
 ---
 
