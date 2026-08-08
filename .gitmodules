@@ -22,3 +22,9 @@
 [submodule "repos/repo-template"]
 	path = repos/repo-template
 	url = https://github.com/fromsukong/repo-template.git
+[submodule "repos/n8n"]
+	path = repos/n8n
+	url = git@github.com:fromsukong/n8n.git
+[submodule "repos/activepieces"]
+	path = repos/activepieces
+	url = git@github.com:fromsukong/activepieces.git
